@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import {
-  Bot,
   FileText,
   Mail,
   Linkedin,
@@ -31,7 +30,6 @@ import {
 } from "lucide-react";
 import CommandPalette from "./components/CommandPalette";
 import HeroSection from "./components/HeroSection";
-import AICopilot from "./components/AICopilot";
 
 // Structured data for the portfolio
 const EXPERIENCES = [
@@ -155,7 +153,6 @@ const CERTIFICATIONS_GROUPED = [
 
 export default function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [copilotOpen, setCopilotOpen] = useState(false);
   const [activeProjectTab, setActiveProjectTab] = useState<"all" | "web" | "mobile">("all");
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
 
@@ -342,15 +339,7 @@ export default function App() {
               {darkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {/* AI Twin Trigger Button */}
-            <button
-              id="header-copilot-trigger"
-              onClick={() => setCopilotOpen(true)}
-              className="px-4 py-2 bg-[#0f3830] dark:bg-emerald-600 hover:bg-[#0c2c26] dark:hover:bg-emerald-700 text-white text-xs font-sans font-bold rounded-full transition-all cursor-pointer active:scale-95 flex items-center gap-1.5"
-            >
-              <Bot className="w-4 h-4 text-white" />
-              <span>AI Twin</span>
-            </button>
+
 
             <button
               id="header-hire-btn"
@@ -927,18 +916,8 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Back to Top & AI Copilot floating bubble */}
+      {/* Back to Top */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-2.5 items-end">
-        {/* Floating AI Copilot Trigger */}
-        <button
-          onClick={() => setCopilotOpen(true)}
-          className="p-3 bg-[#0f3830] dark:bg-emerald-600 hover:bg-[#0c2c26] dark:hover:bg-emerald-700 text-white rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs font-sans font-bold cursor-pointer active:scale-95 animate-pulse"
-          title="Open AI Twin"
-        >
-          <Bot className="w-4.5 h-4.5 text-white" />
-          <span>Ask My AI Twin</span>
-        </button>
-
         <button
           onClick={() => handleScrollToSection("portfolio-app")}
           className="p-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl text-[#18222f]/80 dark:text-white transition-all shadow-md text-xs font-mono font-bold cursor-pointer"
@@ -952,11 +931,6 @@ export default function App() {
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
         onScrollToSection={handleScrollToSection}
-      />
-
-      <AICopilot
-        isOpen={copilotOpen}
-        onClose={() => setCopilotOpen(false)}
       />
     </div>
   );
