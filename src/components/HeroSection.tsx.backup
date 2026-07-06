@@ -1,0 +1,269 @@
+import React from "react";
+import { motion } from "motion/react";
+import { Bot, FileText, Search, Sparkles, Send, Mail, Calendar, ArrowUpRight } from "lucide-react";
+
+interface HeroSectionProps {
+  onOpenCopilot: () => void;
+  onOpenCommandPalette: () => void;
+  onScrollToSection: (sectionId: string) => void;
+}
+
+export default function HeroSection({
+  onOpenCopilot,
+  onOpenCommandPalette,
+  onScrollToSection,
+}: HeroSectionProps) {
+  const handleDownloadResume = () => {
+    const resumeText = `Athul K R - Full-Stack Developer Resume\nEmail: athulkr34@gmail.com\nGitHub: https://github.com/athul-dotcom\nLinkedIn: https://linkedin.com/in/athul-k-r-b04255326\nKochi, Kerala, India\n\nPlease visit the portfolio at ${window.location.origin} for the fully interactive AI resume experience!`;
+    const blob = new Blob([resumeText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "Athul_KR_Resume.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <section
+      id="hero"
+      className="relative min-h-[90vh] flex items-center justify-center bg-[#faf9f5] px-6 md:px-12 lg:px-24 py-16 overflow-hidden select-none"
+    >
+      {/* Dynamic Background Noise & Subtle Shapes */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e4e1d3_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
+
+      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
+        
+        {/* LEFT COLUMN: INTRO & HEADINGS */}
+        <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-8 md:space-y-12">
+          
+          <div className="space-y-6">
+            {/* Recruiter Alert Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              onClick={onOpenCopilot}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#136c5b]/10 hover:bg-[#136c5b]/15 border border-[#136c5b]/20 text-[#136c5b] text-xs font-semibold cursor-pointer transition-all duration-300 w-fit shadow-xs group"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#136c5b] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#136c5b]"></span>
+              </span>
+              <span className="font-display tracking-wider uppercase text-[10px]">Open to Opportunities</span>
+              <span className="text-[#136c5b]/40">|</span>
+              <span className="flex items-center gap-1 font-medium">
+                Ask my AI Recruiter Twin <Sparkles className="w-3 h-3 text-[#f2b32c] fill-[#f2b32c]" />
+              </span>
+            </motion.div>
+
+            {/* Large Binjan-Style Headline */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-1"
+            >
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tight text-[#121c2c] leading-none">
+                Hey There,
+                <br />
+                <span className="relative">
+                  I'm Athul
+                </span>
+              </h1>
+            </motion.div>
+
+            {/* Email Address Underline Link */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+            >
+              <a
+                href="mailto:athulkr34@gmail.com"
+                className="inline-flex items-center gap-1.5 text-lg md:text-xl font-display font-bold text-[#e09e1b] hover:text-[#c4850f] transition-colors underline decoration-2 underline-offset-4 decoration-[#e09e1b]/30 hover:decoration-[#e09e1b]/80"
+              >
+                athulkr34@gmail.com
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Experience Statistics & Action Buttons */}
+          <div className="space-y-8">
+            <div className="flex items-end gap-6 border-l-4 border-[#136c5b] pl-5 py-1">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, type: "spring", delay: 0.3 }}
+                className="text-6xl md:text-7xl font-display font-extrabold text-[#121c2c] leading-none tracking-tight"
+              >
+                9
+              </motion.div>
+              <div className="text-xs md:text-sm font-display font-bold text-[#5c6874] uppercase tracking-widest leading-snug">
+                Months of
+                <br />
+                Professional Internship
+                <br />
+                Experience
+              </div>
+            </div>
+
+            {/* Buttons Row */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap items-center gap-4"
+            >
+              <button
+                onClick={onOpenCopilot}
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#136c5b] hover:bg-[#0f5446] text-white font-display font-bold text-sm transition-all shadow-md shadow-[#136c5b]/20 hover:shadow-lg hover:shadow-[#136c5b]/30 cursor-pointer active:scale-95"
+              >
+                <Bot className="w-4 h-4" />
+                <span>Chat with AI Copilot</span>
+              </button>
+
+              <button
+                onClick={handleDownloadResume}
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#faf9f5] text-[#121c2c] border-2 border-[#121c2c] font-display font-bold text-sm transition-all cursor-pointer active:scale-95"
+              >
+                <FileText className="w-4 h-4 text-[#121c2c]" />
+                <span>Download Resume</span>
+              </button>
+
+              <button
+                onClick={onOpenCommandPalette}
+                className="flex items-center gap-2 px-4 py-3.5 rounded-full bg-[#f2eede] hover:bg-[#eae5d2] text-[#5c6874] font-mono text-xs transition-all cursor-pointer active:scale-95 border border-[#dfdab8]/50"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>Search</span>
+                <kbd className="text-[10px] bg-white border border-[#dfdab8] px-1.5 py-0.5 rounded font-mono shadow-xs">
+                  ⌘K
+                </kbd>
+              </button>
+            </motion.div>
+          </div>
+
+        </div>
+
+        {/* RIGHT COLUMN: PORTRAIT IMAGE WITH PAINT SPOTS */}
+        <div className="lg:col-span-5 relative flex flex-col items-center lg:items-end justify-center">
+          
+          {/* Subtle Tagline top-right */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="hidden lg:block absolute -top-8 right-0 max-w-[240px] text-right"
+          >
+            <p className="text-sm font-sans font-medium text-[#5c6874] italic leading-relaxed">
+              "I build beautifully simple companion mobile apps, high-performance web systems, and love what I do."
+            </p>
+          </motion.div>
+
+          <div className="relative w-72 h-72 sm:w-85 sm:h-85 lg:w-96 lg:h-96 flex items-center justify-center">
+            
+            {/* Paint brush stroke background overlay */}
+            <div className="absolute inset-0 bg-[#136c5b] rounded-full blur-2xl opacity-10 scale-110 pointer-events-none" />
+            
+            {/* Paint stroke SVG shape behind the avatar */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none scale-110">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full fill-[#136c5b]">
+                <path d="M44.5,-73.2C58.1,-65.4,70,-54.6,77.7,-41C85.5,-27.4,89.1,-10.9,88.4,5.4C87.8,21.8,82.8,38.1,73.5,50.7C64.2,63.4,50.6,72.4,35.6,77.3C20.6,82.1,4.1,82.9,-12,79.5C-28.1,76.2,-43.8,68.7,-55.8,57.7C-67.8,46.7,-76.1,32.2,-78.9,16.8C-81.8,1.4,-79.1,-15,-72.5,-29C-65.9,-43,-55.4,-54.7,-42.6,-62.8C-29.8,-71,-14.9,-75.6,0.6,-76.6C16.1,-77.6,30.9,-81,44.5,-73.2Z" transform="translate(100 100)" />
+              </svg>
+            </div>
+
+            {/* Secondary warm contrast paint accent */}
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 pointer-events-none scale-100">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full fill-[#f2b32c]/90">
+                <path d="M51.2,-64C66.5,-53.4,79.1,-38.7,83,-22C86.9,-5.3,82.1,13.5,73.5,29.9C64.9,46.3,52.5,60.4,36.9,67.6C21.3,74.9,2.5,75.4,-15.7,70.9C-33.9,66.4,-51.5,56.9,-63,42.4C-74.5,27.9,-79.9,8.4,-77.3,-9.9C-74.8,-28.1,-64.3,-45,-49.6,-55.5C-34.9,-66,-17.4,-70.2,0.4,-70.8C18.2,-71.4,36,-68.4,51.2,-64Z" transform="translate(100 100)" />
+              </svg>
+            </div>
+
+            {/* Circular Framed Developer Avatar Image */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.7, type: "spring" }}
+              className="relative w-[84%] h-[84%] rounded-[3rem] overflow-hidden border-8 border-white shadow-xl bg-[#dfdac8]"
+            >
+              <img
+                src="https://i.postimg.cc/Kv1cxgKJ/image.png"
+                alt="Athul K R"
+                className="w-full h-full object-cover hover:scale-110 transition-all duration-500"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121c2c]/30 to-transparent" />
+            </motion.div>
+
+            {/* Round Retro Stamp Badge: "EST. 2024 / CERTIFIED FULL-STACK DEVELOPER" */}
+            <motion.div
+              initial={{ rotate: -15, scale: 0 }}
+              animate={{ rotate: 12, scale: 1 }}
+              transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+              className="absolute -bottom-6 -right-6 w-32 h-32 bg-white rounded-full border-2 border-[#121c2c] shadow-lg flex flex-col items-center justify-center p-2 text-center"
+            >
+              <div className="absolute inset-1.5 border border-dashed border-[#121c2c]/40 rounded-full pointer-events-none" />
+              <div className="w-10 h-10 rounded-full bg-[#136c5b]/10 flex items-center justify-center mb-1 text-[#136c5b]">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <span className="text-[9px] font-display font-extrabold text-[#121c2c] leading-tight tracking-wider">
+                CERTIFIED
+              </span>
+              <span className="text-[8px] font-mono text-[#5c6874] uppercase tracking-widest leading-none">
+                FULL-STACK
+              </span>
+              <span className="text-[8px] font-mono font-bold text-[#e09e1b] mt-0.5">
+                INTERN
+              </span>
+            </motion.div>
+
+          </div>
+
+          {/* Social Icons Below Photo */}
+          <div className="flex items-center gap-4 mt-8 mr-4 text-[#5c6874]">
+            <a
+              href="https://github.com/athul-dotcom"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#136c5b] transition-colors p-2 bg-white hover:bg-[#136c5b]/10 rounded-full border border-[#dfdab8]/50 shadow-xs"
+              title="GitHub"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22v3.293c0 .319.22.694.825.576C20.565 21.795 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/in/athul-k-r-b04255326"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#136c5b] transition-colors p-2 bg-white hover:bg-[#136c5b]/10 rounded-full border border-[#dfdab8]/50 shadow-xs"
+              title="LinkedIn"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg>
+            </a>
+            <span className="text-[#dfdab8]">|</span>
+            <button
+              onClick={() => onScrollToSection("projects")}
+              className="text-xs font-display font-bold text-[#136c5b] hover:underline cursor-pointer"
+            >
+              View My Latest Works
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Elegant Bottom Edge Deco */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-60">
+        <span className="text-[9px] uppercase tracking-widest text-[#5c6874] font-mono font-medium">Scroll to explore</span>
+        <div className="w-1 h-3 rounded-full bg-[#136c5b] animate-bounce" />
+      </div>
+    </section>
+  );
+}

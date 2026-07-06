@@ -1,0 +1,1131 @@
+import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
+import {
+  Bot,
+  Terminal,
+  FileText,
+  Mail,
+  Linkedin,
+  Github,
+  Award,
+  BookOpen,
+  Calendar,
+  MapPin,
+  Sparkles,
+  Search,
+  MessageSquare,
+  CheckCircle,
+  Copy,
+  ArrowRight,
+  ExternalLink,
+  Cpu,
+  Database,
+  Smartphone,
+  Globe,
+  Flame,
+  Info,
+  Clock,
+  Send,
+  Sliders,
+  Check,
+  CheckSquare,
+  Phone,
+  MessageCircle
+} from "lucide-react";
+import AICopilot from "./components/AICopilot";
+import CommandPalette from "./components/CommandPalette";
+import HeroSection from "./components/HeroSection";
+
+// Structured data for the portfolio (preserving exact existing content)
+const EXPERIENCES = [
+  {
+    id: "cellar",
+    company: "Cellar Innovative Developers",
+    role: "Project Intern – Mobile Application Development",
+    duration: "Dec 2024 – Mar 2025",
+    location: "Kochi, India",
+    achievements: [
+      "Developed and engineered key student-faculty workflows for the Academix Hub mobile companion application using React Native, Node.js, Express.js, and MySQL.",
+      "Collaborated closely within an Agile squad to deliver rapid sprint milestones, optimizing REST API response payloads and state synchronization.",
+      "Conducted extensive troubleshooting and component-level debugging on Android emulators and real devices, reducing runtime faults significantly."
+    ],
+    technologies: ["React Native", "Node.js", "Express.js", "MySQL", "REST APIs", "Android Studio"],
+    metrics: ["Reduced reported app bugs by 35%", "Engineered 12+ modular custom components"]
+  },
+  {
+    id: "techwingsys",
+    company: "TECHWINGSYS",
+    role: "Project Intern – Web Application Development",
+    duration: "Jul 2024 – Nov 2024",
+    location: "Kochi, India",
+    achievements: [
+      "Designed, developed, and deployed the full-stack Academix Hub web application from scratch using PHP, MySQL, HTML5, and CSS3.",
+      "Architected clean, normalized relational database schemas ensuring 100% data integrity for academic administration modules.",
+      "Spearheaded the entire Software Development Lifecycle (SDLC) from requirements gathering and wireframing to backend coding, testing, and cloud deployment."
+    ],
+    technologies: ["HTML5", "CSS3", "PHP", "MySQL", "Apache Server", "Relational Database Design"],
+    metrics: ["Built 100% scratch architecture", "Supported role-based portal access"]
+  }
+];
+
+const PROJECTS = [
+  {
+    id: "academix-web",
+    title: "Academix Hub – Web System",
+    type: "web" as const,
+    description: "A comprehensive academic management system supporting student and faculty portals, secure session-based authentication, and dynamic dashboard reports.",
+    longDescription: "Built from scratch to streamline college operations. Features automated attendance logs, course syllabi coordination, marks entry, and secure, granular role-based permissions (Student, Teacher, Admin). Designed highly normalized MySQL schemas to handle complex data relationships efficiently.",
+    techStack: ["PHP", "MySQL", "HTML5", "CSS3", "JavaScript"],
+    features: ["Role-Based Authorization", "Attendance Audit Trail", "Dynamic Data Analytics Dashboard"],
+    challenges: "Developing custom, secure session management and protecting database entrypoints from SQL injection without modern ORM frameworks.",
+    solutions: "Implementing parameterized SQL statements throughout and creating robust custom cookie-session middleware layers.",
+    githubUrl: "https://github.com/athul-dotcom",
+    liveUrl: "https://ais-dev-qzf3gkkophupw2haijlmds-84942170695.asia-southeast1.run.app",
+    colorTheme: "bg-[#136c5b]"
+  },
+  {
+    id: "academix-mobile",
+    title: "Academix Hub – Mobile App",
+    type: "mobile" as const,
+    description: "Cross-platform mobile companion built with React Native for on-the-go academic resource retrieval and real-time interaction feeds.",
+    longDescription: "Developed as a sleek mobile companion app syncing instantly with academic servers via secure REST APIs. Optimized to handle patchy network connections gracefully by employing client-side local caching states.",
+    techStack: ["React Native", "Node.js", "Express.js", "MySQL", "REST APIs"],
+    features: ["Biometric Portal Sync", "Offline-First Asset Caching", "Responsive Touch Interactions"],
+    challenges: "Handling rapid, concurrent state updates in API responses and rendering deeply nested course structures efficiently.",
+    solutions: "Implemented modular, memorized components in React Native and optimized JSON payloads to transfer only relevant changed deltas.",
+    githubUrl: "https://github.com/athul-dotcom",
+    liveUrl: "https://ais-dev-qzf3gkkophupw2haijlmds-84942170695.asia-southeast1.run.app",
+    colorTheme: "bg-[#f2b32c]"
+  }
+];
+
+const SKILL_CATEGORIES = [
+  {
+    title: "Programming Languages",
+    skills: [
+      { name: "Python", level: 90 },
+      { name: "JavaScript (ES6+)", level: 88 },
+      { name: "TypeScript", level: 82 },
+      { name: "SQL", level: 85 },
+      { name: "C++", level: 75 },
+      { name: "PHP", level: 80 }
+    ]
+  },
+  {
+    title: "Frameworks & Ecosystems",
+    skills: [
+      { name: "Node.js", level: 88 },
+      { name: "Express.js", level: 85 },
+      { name: "React / React Native", level: 86 },
+      { name: "Angular", level: 78 },
+      { name: "RESTful APIs", level: 90 }
+    ]
+  },
+  {
+    title: "Databases & Platforms",
+    skills: [
+      { name: "MySQL", level: 87 },
+      { name: "MongoDB", level: 80 },
+      { name: "Git & GitHub", level: 90 },
+      { name: "Android Studio", level: 76 }
+    ]
+  }
+];
+
+const CERTIFICATIONS = [
+  {
+    title: "Artificial Intelligence Fundamentals",
+    issuer: "IBM SkillsBuild",
+    date: "Jun 2026",
+    color: "bg-[#136c5b]/10 border-[#136c5b]/20 text-[#136c5b]"
+  },
+  {
+    title: "IoT Platforms Overview",
+    issuer: "Infosys Springboard",
+    date: "Apr 2026",
+    color: "bg-[#f2b32c]/10 border-[#f2b32c]/20 text-[#c4850f]"
+  },
+  {
+    title: "Basics of Python Development",
+    issuer: "Infosys Springboard",
+    date: "Feb 2026",
+    color: "bg-rose-50 border-rose-100 text-rose-700"
+  },
+  {
+    title: "Computational Problem Solving",
+    issuer: "Infosys Springboard",
+    date: "Jan 2026",
+    color: "bg-sky-50 border-sky-100 text-sky-700"
+  }
+];
+
+export default function App() {
+  const [copilotOpen, setCopilotOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [currentUtcTime, setCurrentUtcTime] = useState("");
+  const [activeProjectTab, setActiveProjectTab] = useState<"all" | "web" | "mobile">("all");
+  const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
+
+  // Form State
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+  const [messagesReceived, setMessagesReceived] = useState<any[]>([]);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  // Visitor Counter
+  const [visitorCount, setVisitorCount] = useState(142);
+
+  // Update real-time clock
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setCurrentUtcTime(now.toUTCString().replace("GMT", "UTC"));
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Keyboard shortcut for Cmd+K or Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Fetch submitted messages from local storage simulation / API
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("/api/messages");
+      if (res.ok) {
+        const data = await res.json();
+        setMessagesReceived(data);
+      }
+    } catch (e) {
+      console.warn("Could not fetch message logs", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactName || !contactEmail || !contactMessage) return;
+
+    setIsSubmitting(true);
+    setSubmitSuccess(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contactName,
+          email: contactEmail,
+          message: contactMessage,
+          subject: "Portfolio Inquiry"
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setSubmitSuccess(data.message || "Message sent successfully!");
+        setContactName("");
+        setContactEmail("");
+        setContactMessage("");
+        setVisitorCount(prev => prev + 1);
+        fetchMessages();
+      } else {
+        throw new Error("Failed");
+      }
+    } catch (err) {
+      setSubmitSuccess("Message cached locally! Thank you for reaching out.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText("athulkr34@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  const handleScrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const filteredProjects = PROJECTS.filter(
+    (p) => activeProjectTab === "all" || p.type === activeProjectTab
+  );
+
+  return (
+    <div id="portfolio-app" className="bg-[#faf9f5] text-[#121c2c] min-h-screen font-sans selection:bg-[#136c5b]/20 selection:text-[#121c2c] overflow-x-hidden pb-12 relative">
+      
+      {/* Global Scroll Progress */}
+      <div id="scroll-progress-bar" className="fixed top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#136c5b] via-[#e09e1b] to-[#136c5b] z-50" />
+
+      {/* Modern Binjan-Style Header */}
+      <header id="portfolio-header" className="sticky top-0 bg-[#faf9f5]/90 backdrop-blur-md border-b border-[#dfdab8]/50 z-40 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+          
+          {/* Logo / Brand (Cursive Binjan aesthetic) */}
+          <div
+            id="brand-logo-container"
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => handleScrollToSection("hero")}
+          >
+            <span className="font-cursive text-3.5xl font-extrabold text-[#121c2c] tracking-wide hover:opacity-80 transition-opacity">
+              Athul
+            </span>
+          </div>
+
+          {/* Center Navigation Tabs (As requested in image) */}
+          <nav id="header-nav" className="hidden md:flex items-center gap-8 text-xs font-display font-black uppercase tracking-wider text-[#5c6874]">
+            <button onClick={() => handleScrollToSection("services")} className="hover:text-[#136c5b] transition-colors cursor-pointer relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#136c5b] after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Services</button>
+            <button onClick={() => handleScrollToSection("projects")} className="hover:text-[#136c5b] transition-colors cursor-pointer relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#136c5b] after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Works</button>
+            <button onClick={() => handleScrollToSection("experience")} className="hover:text-[#136c5b] transition-colors cursor-pointer relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#136c5b] after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Experience</button>
+            <button onClick={() => handleScrollToSection("skills")} className="hover:text-[#136c5b] transition-colors cursor-pointer relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#136c5b] after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Skills</button>
+          </nav>
+
+          {/* Quick Actions (Elegant light outline button & Solid Teal) */}
+          <div id="header-actions" className="flex items-center gap-3">
+            <button
+              id="header-copilot-trigger"
+              onClick={() => setCopilotOpen(true)}
+              className="px-5 py-2.5 bg-[#136c5b] hover:bg-[#0f5446] rounded-full text-xs font-display font-black text-white flex items-center gap-1.5 transition-all shadow-md cursor-pointer active:scale-95"
+            >
+              <Bot className="w-4 h-4 text-white" />
+              <span>AI Twin</span>
+            </button>
+
+            <button
+              id="header-hire-btn"
+              onClick={() => handleScrollToSection("contact")}
+              className="hidden sm:block px-5 py-2.5 bg-transparent hover:bg-[#eae5d2]/40 text-[#121c2c] border-2 border-[#121c2c] text-xs font-display font-black rounded-full transition-all cursor-pointer active:scale-95"
+            >
+              Hire Me
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section (Rendered dynamically based on modified file) */}
+      <HeroSection
+        onOpenCopilot={() => setCopilotOpen(true)}
+        onOpenCommandPalette={() => setPaletteOpen(true)}
+        onScrollToSection={handleScrollToSection}
+      />
+
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-6 md:px-12 space-y-24 mt-16">
+        
+        {/* Section 2: "What do I help?" (About & Services Bento inspired from image) */}
+        <section id="services" className="scroll-mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left Col: Three elegant icon-badge list cards */}
+            <div className="lg:col-span-5 space-y-5">
+              
+              {/* Card 1: Website Design */}
+              <div className="bg-white border-2 border-[#121c2c] p-6 rounded-[2rem] flex items-center gap-5 shadow-xs hover:-translate-y-1 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-full bg-[#136c5b] flex items-center justify-center text-white shrink-0">
+                  <Globe className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-display font-extrabold text-[#121c2c]">Website Design</h3>
+                  <p className="text-xs text-[#5c6874] mt-1">PHP / MySQL scratch architectures, role-based modules, and dynamic database admin dashboards.</p>
+                </div>
+              </div>
+
+              {/* Card 2: Mobile App Design */}
+              <div className="bg-white border-2 border-[#121c2c] p-6 rounded-[2rem] flex items-center gap-5 shadow-xs hover:-translate-y-1 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-full bg-[#f2b32c] flex items-center justify-center text-[#121c2c] shrink-0">
+                  <Smartphone className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-display font-extrabold text-[#121c2c]">Mobile App Design</h3>
+                  <p className="text-xs text-[#5c6874] mt-1">React Native student-faculty workflows, offline-first assets, and optimized payload deliveries.</p>
+                </div>
+              </div>
+
+              {/* Card 3: Brand Identity & DB Normalized schemas */}
+              <div className="bg-white border-2 border-[#121c2c] p-6 rounded-[2rem] flex items-center gap-5 shadow-xs hover:-translate-y-1 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-full bg-[#e06b5a] flex items-center justify-center text-white shrink-0">
+                  <Database className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-display font-extrabold text-[#121c2c]">Database & Security</h3>
+                  <p className="text-xs text-[#5c6874] mt-1">100% relational integrity schema normalization, parameter injection protection, and session tokens.</p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Col: Text outline & Statistics */}
+            <div className="lg:col-span-7 space-y-8">
+              <span className="text-[#e09e1b] font-mono tracking-widest uppercase text-xs font-extrabold block">My Core Capabilities</span>
+              
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-[#121c2c] leading-tight tracking-tight">
+                What do I help?
+              </h2>
+
+              <p className="text-base text-[#5c6874] leading-relaxed">
+                I help you build high-performance web systems and cross-platform companion mobile apps. Leveraging 9 months of intensive full-stack internship experience, I write clear modular codebases and plan secure normalized databases.
+              </p>
+
+              <p className="text-sm text-[#5c6874] leading-relaxed italic border-l-4 border-[#136c5b] pl-4">
+                "We use structured process designs to gather requirements, compile wireframes, test against real devices, and deploy scalable digital solutions."
+              </p>
+
+              {/* Stats Row matches image */}
+              <div className="grid grid-cols-3 gap-6 pt-6 border-t-2 border-[#121c2c]/10">
+                <div>
+                  <p className="text-3xl md:text-4xl font-display font-black text-[#136c5b]">2+</p>
+                  <p className="text-[10px] md:text-xs font-mono font-bold text-[#5c6874] uppercase tracking-wider mt-1">Complex Projects</p>
+                </div>
+                <div>
+                  <p className="text-3xl md:text-4xl font-display font-black text-[#e09e1b]">9+</p>
+                  <p className="text-[10px] md:text-xs font-mono font-bold text-[#5c6874] uppercase tracking-wider mt-1">Months Interned</p>
+                </div>
+                <div>
+                  <p className="text-3xl md:text-4xl font-display font-black text-[#e06b5a]">100%</p>
+                  <p className="text-[10px] md:text-xs font-mono font-bold text-[#5c6874] uppercase tracking-wider mt-1">Relational Integrity</p>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* Section 3: "My Work Experience" (Timeline Section from image) */}
+        <section id="experience" className="scroll-mt-24">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-[#121c2c] pb-6 mb-12">
+            <div>
+              <span className="text-[#136c5b] font-mono tracking-widest uppercase text-xs font-extrabold block mb-2">Carrier Milestones</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-[#121c2c]">
+                My Work Experience
+              </h2>
+            </div>
+            <div className="text-xs font-mono font-bold text-[#e09e1b] uppercase tracking-widest mt-3 md:mt-0">
+              9-Months Professional History Log
+            </div>
+          </div>
+
+          {/* Timeline styled exactly like the list in the image */}
+          <div className="relative border-l-2 border-[#121c2c] pl-8 sm:pl-12 space-y-12">
+            
+            {/* Experience Item 1 */}
+            <div className="relative">
+              {/* Timeline dot */}
+              <div className="absolute -left-[41px] sm:-left-[57px] top-1.5 w-6 h-6 rounded-full bg-[#136c5b] border-4 border-white shadow-md flex items-center justify-center" />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] shadow-xs">
+                
+                <div className="lg:col-span-4">
+                  <span className="text-xs font-mono font-bold text-[#136c5b] tracking-wider uppercase">Dec 2024 – Mar 2025</span>
+                  <h3 className="text-xl font-display font-extrabold text-[#121c2c] mt-1">Cellar Innovative Developers</h3>
+                  <p className="text-xs text-[#5c6874] mt-1 uppercase font-mono font-bold tracking-wider">Kochi, India • Internship</p>
+                  
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {["React Native", "MySQL", "Node.js", "Express", "Android"].map(t => (
+                      <span key={t} className="text-[10px] font-mono font-bold text-[#121c2c] bg-[#faf9f5] border border-[#dfdab8] px-2 py-0.5 rounded-md">{t}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-8 space-y-4">
+                  <h4 className="text-lg font-display font-extrabold text-[#121c2c]">Project Intern – Mobile Application Development</h4>
+                  <ul className="space-y-3.5">
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#136c5b] shrink-0 mt-0.5" />
+                      <span>Engineered responsive campus workflows inside the Academix Hub React Native mobile companion app, supporting immediate syllabus retrieval.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#136c5b] shrink-0 mt-0.5" />
+                      <span>Coordinated student-faculty session handshakes with clean Express Node.js controllers, reducing response footprint.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#136c5b] shrink-0 mt-0.5" />
+                      <span>Deployed component-level debugs across diverse physical testbeds and emulators, cutting launch crash frequencies by 35%.</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Experience Item 2 */}
+            <div className="relative">
+              {/* Timeline dot */}
+              <div className="absolute -left-[41px] sm:-left-[57px] top-1.5 w-6 h-6 rounded-full bg-[#f2b32c] border-4 border-white shadow-md flex items-center justify-center" />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] shadow-xs">
+                
+                <div className="lg:col-span-4">
+                  <span className="text-xs font-mono font-bold text-[#e09e1b] tracking-wider uppercase">Jul 2024 – Nov 2024</span>
+                  <h3 className="text-xl font-display font-extrabold text-[#121c2c] mt-1">TECHWINGSYS</h3>
+                  <p className="text-xs text-[#5c6874] mt-1 uppercase font-mono font-bold tracking-wider">Kochi, India • Internship</p>
+                  
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {["PHP", "MySQL", "HTML5", "CSS3", "Apache", "SDLC"].map(t => (
+                      <span key={t} className="text-[10px] font-mono font-bold text-[#121c2c] bg-[#faf9f5] border border-[#dfdab8] px-2 py-0.5 rounded-md">{t}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-8 space-y-4">
+                  <h4 className="text-lg font-display font-extrabold text-[#121c2c]">Project Intern – Web Application Development</h4>
+                  <ul className="space-y-3.5">
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#e09e1b] shrink-0 mt-0.5" />
+                      <span>Led full-lifecycle assembly of the Academix Hub central web portal using native PHP and raw SQL queries from scratch.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#e09e1b] shrink-0 mt-0.5" />
+                      <span>Architected relational administration modules, performing 3NF database normalization supporting dynamic mark entries.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-[#5c6874] leading-relaxed">
+                      <CheckCircle className="w-5 h-5 text-[#e09e1b] shrink-0 mt-0.5" />
+                      <span>Managed full testing cycles against database manipulation requests, confirming zero data corruption across multi-role admin states.</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Section 4: "My Latest Works" (Dynamic Mockups Grid matching image style) */}
+        <section id="projects" className="scroll-mt-24">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-[#121c2c] pb-6 mb-12">
+            <div>
+              <span className="text-[#e09e1b] font-mono tracking-widest uppercase text-xs font-extrabold block mb-2">Selected Cases</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-[#121c2c]">
+                My Latest Works
+              </h2>
+            </div>
+            {/* Dynamic tabs */}
+            <div className="flex items-center bg-[#f2eede] border border-[#dfdab8] rounded-full p-1 text-xs mt-4 md:mt-0">
+              {(["all", "web", "mobile"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveProjectTab(tab)}
+                  className={`px-4 py-2 rounded-full capitalize font-display font-black transition-all cursor-pointer ${
+                    activeProjectTab === tab
+                      ? "bg-[#136c5b] text-white shadow-xs"
+                      : "text-[#5c6874] hover:text-[#121c2c]"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Premium Portfolio Case cards matching image aesthetic */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                id={`project-card-${project.id}`}
+                className="bg-white border-2 border-[#121c2c] rounded-[2.5rem] overflow-hidden flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform duration-300 group"
+              >
+                {/* Header block with vivid custom color reflecting mockup in image */}
+                <div className={`p-8 ${project.colorTheme} text-white relative min-h-[180px] flex flex-col justify-between`}>
+                  <div className="absolute top-4 right-4 bg-white/20 text-[10px] font-mono uppercase tracking-widest px-3 py-1 rounded-full font-bold">
+                    {project.type}
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <h4 className="text-xs uppercase font-mono tracking-widest text-white/85 font-semibold">Case Study Overview</h4>
+                    <h3 className="text-2xl font-display font-black leading-tight">{project.title}</h3>
+                  </div>
+
+                  <p className="text-xs text-white/90 leading-relaxed font-medium line-clamp-2 max-w-md">
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* Content body */}
+                <div className="p-8 space-y-6">
+                  
+                  <p className="text-xs text-[#5c6874] leading-relaxed bg-[#faf9f5] border border-[#dfdab8] p-4 rounded-2xl italic">
+                    "{project.longDescription}"
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Challenge Box */}
+                    <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl">
+                      <p className="text-[10px] uppercase font-bold text-red-700 font-mono tracking-wider">Challenge Faced</p>
+                      <p className="text-xs text-[#5c6874] mt-1">{project.challenges}</p>
+                    </div>
+
+                    {/* Solution Box */}
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl">
+                      <p className="text-[10px] uppercase font-bold text-emerald-700 font-mono tracking-wider">Solution Deployed</p>
+                      <p className="text-xs text-[#5c6874] mt-1">{project.solutions}</p>
+                    </div>
+                  </div>
+
+                  {/* Bullet Highlights */}
+                  <div className="space-y-2">
+                    <p className="text-[10px] uppercase font-bold text-[#5c6874] font-mono tracking-wider">Key Features Delivered:</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {project.features.map(f => (
+                        <div key={f} className="flex items-center gap-2 text-xs text-[#121c2c] font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#136c5b]" />
+                          <span>{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tech stack */}
+                  <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#121c2c]/10">
+                    {project.techStack.map(t => (
+                      <span key={t} className="text-[10px] font-mono font-bold text-[#121c2c] bg-[#faf9f5] border border-[#dfdab8]/60 px-2 py-0.5 rounded">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Links footer */}
+                  <div className="flex items-center justify-between pt-2">
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-[#5c6874] hover:text-[#121c2c] transition-colors"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>Codebase</span>
+                    </a>
+
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="inline-flex items-center gap-1 text-xs font-display font-black text-[#136c5b] hover:underline cursor-pointer"
+                    >
+                      <span>Explore Case Study</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            ))}
+          </div>
+
+          {/* Project Details Modal (Lightbox dialog styled to match warm theme) */}
+          {selectedProject && (
+            <div id="project-lightbox" className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-[#121c2c]/65 backdrop-blur-xs" onClick={() => setSelectedProject(null)} />
+              <div className="bg-[#faf9f5] border-2 border-[#121c2c] rounded-[2.5rem] w-full max-w-2xl p-6 sm:p-8 z-10 relative overflow-hidden max-h-[90vh] overflow-y-auto shadow-2xl">
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 text-[#5c6874] hover:text-[#121c2c] p-2 rounded-full border border-[#dfdab8] hover:bg-white bg-transparent transition-all font-bold"
+                >
+                  ✕
+                </button>
+
+                <span className="text-[10px] font-mono text-[#e09e1b] uppercase tracking-widest font-extrabold">{selectedProject.type} Case Study</span>
+                <h3 className="text-2xl md:text-3xl font-display font-black text-[#121c2c] mt-2 mb-4">{selectedProject.title}</h3>
+
+                <div className="space-y-6 text-sm text-[#5c6874] leading-relaxed">
+                  <div>
+                    <h4 className="text-xs font-mono font-bold text-[#121c2c] uppercase tracking-wider mb-2">Summary & Architecture</h4>
+                    <p>{selectedProject.longDescription}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-mono font-bold text-[#121c2c] uppercase tracking-wider mb-2">Core Engineering Details</h4>
+                    <p>Both web and mobile versions communicate efficiently to serve student-faculty workloads. The web portal enforces strict session authentication, and the companion app integrates offline data layers to guarantee seamless usage on the go.</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-mono font-bold text-[#121c2c] uppercase tracking-wider mb-2">Key Features Highlighted</h4>
+                    <ul className="list-disc list-inside space-y-1 text-[#5c6874]">
+                      {selectedProject.features.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2.5 pt-5 border-t border-[#dfdab8]/50">
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-5 py-2.5 bg-white border-2 border-[#121c2c] text-[#121c2c] rounded-full text-xs font-display font-black flex items-center gap-2 hover:bg-[#faf9f5] transition-colors"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>View GitHub Repository</span>
+                    </a>
+                    <button
+                      onClick={() => {
+                        setSelectedProject(null);
+                        setCopilotOpen(true);
+                      }}
+                      className="px-5 py-2.5 bg-[#136c5b] text-white rounded-full text-xs font-display font-black flex items-center gap-2 hover:bg-[#0f5446] transition-colors shadow-sm"
+                    >
+                      <Bot className="w-4 h-4" />
+                      <span>Ask AI Twin about this project</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Section 5: STYLED SKILLS MATRIX */}
+        <section id="skills" className="scroll-mt-24">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-[#121c2c] pb-6 mb-12">
+            <div>
+              <span className="text-[#136c5b] font-mono tracking-widest uppercase text-xs font-extrabold block mb-2">Qualified Stack</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-[#121c2c]">
+                Technical Ecosystem
+              </h2>
+            </div>
+            <div className="text-xs font-mono font-bold text-[#5c6874] uppercase tracking-widest mt-2 md:mt-0">
+              Proficient developer capabilities
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {SKILL_CATEGORIES.map((cat, idx) => (
+              <div
+                key={idx}
+                id={`skill-cat-${idx}`}
+                className="bg-white border-2 border-[#121c2c] p-6 rounded-[2rem] flex flex-col justify-between shadow-xs"
+              >
+                <div>
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#121c2c] mb-6 flex items-center gap-2">
+                    <span className="w-1.5 h-4 bg-[#136c5b] rounded-full" />
+                    {cat.title}
+                  </h3>
+
+                  <div className="space-y-4">
+                    {cat.skills.map((skill) => (
+                      <div key={skill.name} className="space-y-1.5">
+                        <div className="flex justify-between text-xs font-bold">
+                          <span className="text-[#121c2c]">{skill.name}</span>
+                          <span className="text-[#5c6874] font-mono">{skill.level}%</span>
+                        </div>
+                        {/* Progress Bar Gauge */}
+                        <div className="h-2 bg-[#faf9f5] border border-[#dfdab8] rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#136c5b] to-[#e09e1b] rounded-full"
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-[#dfdab8]/50 flex justify-between items-center text-[10px] text-[#5c6874] font-mono">
+                  <span>Stack {idx + 1} of 3</span>
+                  <span>Responsive system designs</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Certifications Row (Light Themed) */}
+          <div className="mt-12">
+            <h3 className="text-xs uppercase font-bold tracking-widest text-[#5c6874] mb-5 font-mono">Industry Certifications</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {CERTIFICATIONS.map((cert, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white border-2 border-[#121c2c] p-5 rounded-2xl flex flex-col justify-between min-h-[115px] shadow-xs hover:-translate-y-0.5 transition-transform"
+                >
+                  <div>
+                    <span className="text-[10px] font-mono text-[#5c6874] font-bold block uppercase">{cert.issuer}</span>
+                    <h4 className="text-xs font-display font-extrabold text-[#121c2c] mt-1 leading-snug">{cert.title}</h4>
+                  </div>
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-[10px] text-[#5c6874] font-mono">{cert.date}</span>
+                    <span className="w-2 h-2 bg-[#136c5b] rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 6: ELITE ACHIEVEMENTS (SSB & KHO-KHO) */}
+        <section id="achievements" className="scroll-mt-24">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-[#121c2c] pb-6 mb-12">
+            <div>
+              <span className="text-[#136c5b] font-mono tracking-widest uppercase text-xs font-extrabold block mb-2">Elite Accolades</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-[#121c2c]">
+                Leadership & Strategy
+              </h2>
+            </div>
+            <div className="text-xs font-mono font-bold text-[#e09e1b] uppercase tracking-widest mt-2 md:mt-0">
+              National achievements log
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* SSB Recommendation - Highlighted Card */}
+            <div id="achievement-ssb" className="lg:col-span-2 bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] flex flex-col justify-between relative group overflow-hidden shadow-xs">
+              
+              <div>
+                <span className="text-[10px] font-mono text-[#136c5b] bg-[#136c5b]/10 border border-[#136c5b]/20 px-3 py-1 rounded-full uppercase tracking-wider font-extrabold">
+                  Top Executive Pool
+                </span>
+                <h3 className="text-2xl font-display font-black text-[#121c2c] italic tracking-tight mt-4 mb-3">
+                  Services Selection Board (SSB) Recommended Candidate
+                </h3>
+                <p className="text-[#5c6874] text-xs md:text-sm leading-relaxed mb-6">
+                  Recommended by the <strong className="text-[#121c2c]">Services Selection Board (SSB)</strong> as a candidate demonstrating exemplary officer-like qualities, analytical depth, logical reasoning under severe pressure, and structured teamwork coordination. Placed among the top recommended bracket of national candidates evaluating military and strategic potential.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#dfdab8]/50 text-[10px] text-[#5c6874] font-mono">
+                <span className="flex items-center gap-1.5 text-[#136c5b] font-bold">
+                  <Award className="w-4 h-4 text-[#136c5b]" />
+                  #LEADERSHIP #STRATEGY
+                </span>
+                <span className="font-bold">Select National Pool</span>
+              </div>
+            </div>
+
+            {/* National Level Athlete Card */}
+            <div id="achievement-kho-kho" className="bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group shadow-xs">
+              
+              <div>
+                <span className="text-[10px] font-mono text-[#e09e1b] bg-[#f2b32c]/10 border border-[#f2b32c]/20 px-3 py-1 rounded-full uppercase tracking-wider font-extrabold">
+                  Team Captain
+                </span>
+                <h3 className="text-xl font-display font-black text-[#121c2c] tracking-tight mt-4 mb-3">
+                  National Kho-Kho Winner
+                </h3>
+                <p className="text-[#5c6874] text-xs leading-relaxed mb-6">
+                  Winner of the <strong className="text-[#121c2c]">CBSE Cluster XI Kho-Kho Tournament (2019-2020)</strong>. Competing at a national-level tournament instills extreme team loyalty, operational execution speed, physical stamina, and rapid adaptive reflexes under tight timelines.
+                </p>
+              </div>
+
+              <div className="text-[10px] text-[#5c6874] font-mono pt-4 border-t border-[#dfdab8]/50 flex justify-between items-center">
+                <span>CBSE Cluster XI</span>
+                <span className="text-[#e09e1b] font-bold">Gold Medalist</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Section 7: REAL-TIME RECRUITER PLAYGROUND & LIVE LOGS (PROVES FULL-STACK REPUTE) */}
+        <section id="playground" className="scroll-mt-24">
+          <div className="bg-white border-2 border-[#121c2c] rounded-[2.5rem] p-6 sm:p-8 relative overflow-hidden shadow-xs">
+            
+            <div className="flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-center pb-6 border-b-2 border-[#121c2c]/10">
+              <div>
+                <span className="text-[10px] font-mono text-[#136c5b] uppercase tracking-widest block mb-1 font-bold">Recruiter Exclusive Console</span>
+                <h2 className="text-2xl font-display font-black text-[#121c2c]">Full-Stack Live Testing Console</h2>
+                <p className="text-[#5c6874] text-xs mt-1">Submit a message via the form below or chat with the AI Twin to see state updates trigger instantly on this live panel.</p>
+              </div>
+              <div className="flex items-center gap-3 bg-[#faf9f5] border border-[#dfdab8] px-4 py-2 rounded-xl text-xs font-mono font-bold shadow-xs">
+                <span className="text-[#5c6874]">Live Visitors:</span>
+                <strong className="text-[#136c5b] font-black">{visitorCount}</strong>
+                <span className="text-[#dfdab8]">|</span>
+                <span className="text-[#5c6874]">Messages Saved:</span>
+                <strong className="text-[#e09e1b] font-black">{messagesReceived.length}</strong>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+              
+              {/* Submitted message logs display */}
+              <div className="lg:col-span-7 bg-[#fcfbf7] border border-[#dfdab8] p-4 sm:p-6 rounded-2xl flex flex-col justify-between min-h-[250px]">
+                <div>
+                  <h3 className="text-xs uppercase font-mono tracking-widest text-[#5c6874] mb-3.5 flex items-center gap-2 font-bold">
+                    <span className="w-1.5 h-3 bg-[#136c5b] rounded-full" />
+                    Real-time Saved Messages Log
+                  </h3>
+
+                  <div className="space-y-3 max-h-[190px] overflow-y-auto pr-1 scrollbar-thin">
+                    {messagesReceived.length > 0 ? (
+                      messagesReceived.map((msg, index) => (
+                        <div
+                          key={msg.id || index}
+                          className="bg-white border-2 border-[#121c2c] p-3 rounded-xl text-xs flex flex-col gap-1 shadow-xs"
+                        >
+                          <div className="flex items-center justify-between text-[#5c6874] font-mono">
+                            <strong>{msg.name} ({msg.email})</strong>
+                            <span className="text-[9px] text-slate-400">
+                              {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : "Just now"}
+                            </span>
+                          </div>
+                          <p className="text-[#121c2c] mt-1 italic font-sans">"{msg.message}"</p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-8 text-center text-[#5c6874] italic text-xs font-mono">
+                        No custom messages received yet. Submit the contact form below to seed the database!
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#dfdab8]/50 flex justify-between items-center text-[10px] font-mono text-[#5c6874] font-bold">
+                  <span>DB Type: In-memory Array (Server API)</span>
+                  <span className="text-[#136c5b] flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#136c5b] animate-pulse" />
+                    SYNCED WITH EXPRESS SERVER
+                  </span>
+                </div>
+              </div>
+
+              {/* Developer Environment info */}
+              <div className="lg:col-span-5 bg-[#faf9f5] border border-[#dfdab8] p-4 sm:p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xs uppercase font-mono tracking-widest text-[#5c6874] mb-3 flex items-center gap-2 font-bold">
+                    <span className="w-1.5 h-3 bg-[#e09e1b] rounded-full" />
+                    Portfolio Environment Coordinates
+                  </h3>
+
+                  <div className="space-y-2 text-xs font-mono text-[#121c2c] bg-white p-3.5 rounded-xl border border-[#dfdab8] font-bold shadow-xs">
+                    <div className="flex justify-between">
+                      <span className="text-[#5c6874]">Node Environment:</span>
+                      <span className="text-[#136c5b]">production</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#5c6874]">Vite Build Port:</span>
+                      <span className="text-[#e09e1b]">3000 (Proxy)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#5c6874]">Framework Runtime:</span>
+                      <span className="text-[#136c5b]">React 19 / ESM</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#5c6874]">Server Clock:</span>
+                      <span className="text-rose-600 text-[10px] font-mono truncate max-w-[150px]">{currentUtcTime}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#dfdab8]/50">
+                  <p className="text-[10px] text-[#5c6874] leading-relaxed">
+                    This single-page React app uses a custom Express Node.js server. The portfolio builds on Vite & uses standard esbuild bundles for fast startup.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Section 8: CONTACT FORM SECTION */}
+        <section id="contact" className="scroll-mt-24">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-[#121c2c] pb-6 mb-12">
+            <div>
+              <span className="text-[#136c5b] font-mono tracking-widest uppercase text-xs font-extrabold block mb-2">Let's connect</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-[#121c2c]">
+                Saying Hi
+              </h2>
+            </div>
+            <div className="text-xs font-mono font-bold text-[#e09e1b] uppercase tracking-widest mt-2 md:mt-0">
+              Start by saying hi
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Contact details */}
+            <div className="lg:col-span-5 bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] flex flex-col justify-between shadow-xs">
+              <div>
+                <span className="text-[10px] font-mono text-[#136c5b] uppercase tracking-widest block mb-1 font-bold">Direct Outreach</span>
+                <h3 className="text-xl font-display font-extrabold text-[#121c2c] mb-4">Request Resume PDF or Interview</h3>
+                <p className="text-[#5c6874] text-xs leading-relaxed mb-6">
+                  Are you recruiting for Software Engineering, Full-Stack Developer, or Mobile Engineer internships or full-time roles? Drop your email here, ask my AI Twin, or call/email me directly. I will respond to your invitation immediately.
+                </p>
+
+                <div className="space-y-4">
+                  {/* Email row with Copy */}
+                  <div className="flex items-center justify-between p-3.5 bg-[#faf9f5] border-2 border-[#121c2c] rounded-xl text-xs">
+                    <div className="flex items-center gap-2.5">
+                      <Mail className="w-5 h-5 text-[#136c5b] shrink-0" />
+                      <div>
+                        <p className="text-[#5c6874] text-[9px] font-mono uppercase font-bold leading-none">Official Email</p>
+                        <p className="text-[#121c2c] font-bold mt-1">athulkr34@gmail.com</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={copyToClipboard}
+                      className="p-1.5 hover:bg-white border border-transparent hover:border-[#dfdab8] rounded-lg text-[#5c6874] hover:text-[#121c2c] transition-all"
+                      title="Copy email to clipboard"
+                    >
+                      {copiedEmail ? <Check className="w-4 h-4 text-[#136c5b]" /> : <Copy className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  {/* Location info */}
+                  <div className="flex items-center gap-3 p-3.5 bg-[#faf9f5] border-2 border-[#121c2c] rounded-xl text-xs">
+                    <MapPin className="w-5 h-5 text-[#e09e1b] shrink-0" />
+                    <div>
+                      <p className="text-[#5c6874] text-[9px] font-mono uppercase font-bold leading-none">Current Coordinates</p>
+                      <p className="text-[#121c2c] font-bold mt-1">Kochi, Kerala, India (Open to Relocation / Remote)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 mt-6 border-t-2 border-[#dfdab8]/30 flex gap-3.5 items-center justify-center">
+                <a
+                  href="https://github.com/athul-dotcom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-[#faf9f5] border-2 border-[#121c2c] rounded-full hover:bg-[#eae5d2]/40 hover:text-[#136c5b] transition-colors text-[#5c6874] shadow-xs"
+                >
+                  <Github className="w-4.5 h-4.5" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/athul-k-r-b04255326"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-[#faf9f5] border-2 border-[#121c2c] rounded-full hover:bg-[#eae5d2]/40 hover:text-[#136c5b] transition-colors text-[#5c6874] shadow-xs"
+                >
+                  <Linkedin className="w-4.5 h-4.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Interactive Contact Form (Col span 7) */}
+            <div className="lg:col-span-7 bg-white border-2 border-[#121c2c] p-6 sm:p-8 rounded-[2.5rem] shadow-xs">
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#5c6874] font-mono">Your Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      placeholder="Jane Doe"
+                      className="w-full bg-[#faf9f5] border-2 border-[#121c2c] focus:border-[#136c5b] rounded-xl px-4 py-2.5 text-sm text-[#121c2c] focus:outline-none focus:bg-white transition-all placeholder:text-[#dfdab8]"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#5c6874] font-mono">Your Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      placeholder="jane@company.com"
+                      className="w-full bg-[#faf9f5] border-2 border-[#121c2c] focus:border-[#136c5b] rounded-xl px-4 py-2.5 text-sm text-[#121c2c] focus:outline-none focus:bg-white transition-all placeholder:text-[#dfdab8]"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-[#5c6874] font-mono">Message / Invitation Details</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    placeholder="We'd love to invite you for a technical assessment and interview for our Software Engineer position..."
+                    className="w-full bg-[#faf9f5] border-2 border-[#121c2c] focus:border-[#136c5b] rounded-xl px-4 py-2.5 text-sm text-[#121c2c] focus:outline-none focus:bg-white transition-all placeholder:text-[#dfdab8] resize-none"
+                  />
+                </div>
+
+                {submitSuccess && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-xs flex items-center gap-2 font-bold font-mono">
+                    <Check className="w-4 h-4 shrink-0 text-emerald-600" />
+                    <span>{submitSuccess}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[#136c5b] hover:bg-[#0f5446] text-white font-display font-black rounded-xl text-sm transition-all shadow-md disabled:opacity-50 cursor-pointer active:scale-98"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>{isSubmitting ? "Sending..." : "Submit Message To Active Live Logs"}</span>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+      {/* Recruiter Command Hint Footer */}
+      <footer className="max-w-7xl mx-auto px-6 md:px-12 mt-20 pt-8 border-t-2 border-[#dfdab8]/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-4 text-xs text-[#5c6874] font-bold font-display">
+          <span>© 2026 Athul K R. All rights reserved.</span>
+          <span>•</span>
+          <span>Kochi, Kerala, India</span>
+        </div>
+
+        <div className="flex items-center gap-2 text-[10px] text-[#5c6874] font-mono bg-[#f2eede] border border-[#dfdab8] px-3.5 py-1.5 rounded-lg shadow-xs font-bold">
+          <span className="bg-white border border-[#dfdab8] px-1 py-0.5 rounded text-[9px]">⌘</span>
+          <span className="bg-white border border-[#dfdab8] px-1 py-0.5 rounded text-[9px]">K</span>
+          <span>to access developer CLI palette</span>
+        </div>
+      </footer>
+
+      {/* Persistent Back-to-Top / AI Twin Trigger Bubble */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-2.5 items-end">
+        {/* Quick Back-to-Top */}
+        <button
+          onClick={() => handleScrollToSection("portfolio-app")}
+          className="p-3 bg-white border-2 border-[#121c2c] hover:bg-[#faf9f5] rounded-xl text-[#121c2c] transition-all shadow-md text-xs font-mono font-bold cursor-pointer"
+          title="Back to Top"
+        >
+          ↑ Top
+        </button>
+
+        {/* AI Twin Trigger Bubble */}
+        <button
+          onClick={() => setCopilotOpen(true)}
+          className="p-4 bg-[#136c5b] hover:bg-[#0f5446] rounded-full text-white transition-all shadow-xl hover:scale-105 active:scale-95 group relative cursor-pointer"
+          title="Open AI Recruiter Twin"
+        >
+          <Bot className="w-6 h-6" />
+          <span className="absolute right-full mr-2.5 top-1/2 -translate-y-1/2 bg-white border-2 border-[#121c2c] text-[#121c2c] text-[10px] px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none font-display font-extrabold shadow-md">
+            Ask my AI Twin anything
+          </span>
+        </button>
+      </div>
+
+      {/* AICopilot Drawer */}
+      <AICopilot isOpen={copilotOpen} onClose={() => setCopilotOpen(false)} />
+
+      {/* Command Palette */}
+      <CommandPalette
+        isOpen={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        onOpenCopilot={() => setCopilotOpen(true)}
+        onScrollToSection={handleScrollToSection}
+      />
+    </div>
+  );
+}
