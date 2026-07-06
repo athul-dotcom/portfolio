@@ -231,7 +231,7 @@ app.post("/api/contact", async (req, res) => {
 
   res.json({
     success: true,
-    message: "Your message was sent successfully! Athul will get back to you soon.",
+    message: "Your message was sent successfully!",
     id: newMessage.id,
   });
 });
