@@ -245,7 +245,7 @@ export default function App() {
         throw new Error("Failed");
       }
     } catch (err) {
-      setSubmitSuccess("Message cached locally! Thank you for reaching out.");
+      setSubmitSuccess("Thank you for reaching out! I will get back to you shortly.");
     } finally {
       setIsSubmitting(false);
     }
