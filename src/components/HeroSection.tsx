@@ -14,12 +14,10 @@ export default function HeroSection({
   darkMode = false,
 }: HeroSectionProps) {
   const handleDownloadResume = () => {
-    const resumeText = `Athul K R - Full-Stack Developer Resume\nEmail: athulkr34@gmail.com\nGitHub: https://github.com/athul-dotcom\nLinkedIn: https://linkedin.com/in/athul-k-r-b04255326\nKochi, Kerala, India\n\nPlease visit the portfolio at ${window.location.origin} for the interactive resume experience!`;
-    const blob = new Blob([resumeText], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url;
-    link.download = "Athul_KR_Resume.txt";
+    link.href = "/Athul_KR_Resume.pdf";
+    link.download = "Athul_KR_Resume.pdf";
+    link.target = "_blank";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
