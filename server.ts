@@ -141,9 +141,9 @@ Rules for response:
       parts: [{ text: msg.content }],
     }));
 
-    // Generate content using gemini-3.5-flash
+    // Generate content using gemini-1.5-flash
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-1.5-flash",
       contents: [
         ...historyParts.map(h => ({ role: h.role, parts: h.parts })),
         { role: "user", parts: [{ text: userPrompt }] }
