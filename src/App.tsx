@@ -177,33 +177,30 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // Active section highlights via IntersectionObserver
+  // Active section highlights via scroll listener
   useEffect(() => {
-    const sectionIds = ["hero", "about", "experience", "projects", "skills", "contact"];
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: "-25% 0px -55% 0px", // Targets the viewport center
-      threshold: 0.1
-    };
+    const handleScroll = () => {
+      const sectionIds = ["hero", "about", "experience", "projects", "skills", "contact"];
+      const scrollPosition = window.scrollY + 160; // Offset for header & buffer
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+      // Find the current section from bottom to top
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const el = document.getElementById(id);
+        if (el) {
+          if (scrollPosition >= el.offsetTop) {
+            setActiveSection(id);
+            break;
+          }
         }
-      });
+      }
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -301,7 +298,7 @@ export default function App() {
     <div id="portfolio-app" className="bg-[#faf9f6] text-[#18222f] dark:bg-neutral-950 dark:text-neutral-100 min-h-screen font-sans selection:bg-neutral-100 selection:text-black overflow-x-hidden relative transition-colors duration-300">
       
       {/* Modern minimalist Header */}
-      <header id="portfolio-header" className="fixed top-0 left-0 right-0 bg-[#faf9f6]/95 dark:bg-neutral-950/95 backdrop-blur-md border-b border-[#dfdab8]/40 dark:border-neutral-800 z-40 transition-all duration-300">
+      <header id="portfolio-header" className="fixed top-0 left-0 right-0 bg-[#faf9f6]/95 dark:bg-neutral-950/95 backdrop-blur-md border-b border-[#dfdab8]/40 dark:border-neutral-800 z-[100] shadow-sm transition-all duration-300">
         <div className="max-w-8xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
           {/* Logo / Brand */}
           <div
