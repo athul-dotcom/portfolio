@@ -26,7 +26,7 @@ export default function HeroSection({
   return (
     <section
       id="hero"
-      className="relative bg-transparent pt-20 pb-12 px-6 md:px-10 lg:px-16 select-none overflow-hidden"
+      className="relative bg-transparent pt-32 pb-12 px-6 md:px-10 lg:px-16 select-none overflow-hidden"
     >
       {/* Premium SVG Abstract grid background with gradient glow */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none opacity-40 dark:opacity-20 transition-opacity duration-300">

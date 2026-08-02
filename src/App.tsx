@@ -179,28 +179,31 @@ export default function App() {
 
   // Active section highlights via IntersectionObserver
   useEffect(() => {
-    const sections = ["hero", "about", "experience", "projects", "skills", "contact"];
-    const observers = sections.map((id) => {
+    const sectionIds = ["hero", "about", "experience", "projects", "skills", "contact"];
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -55% 0px", // Targets the viewport center
+      threshold: 0.1
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sectionIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (!el) return null;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(id);
-          }
-        },
-        { threshold: 0.25, rootMargin: "-15% 0px -65% 0px" }
-      );
-
-      observer.observe(el);
-      return { el, observer };
+      if (el) observer.observe(el);
     });
 
     return () => {
-      observers.forEach((obs) => {
-        if (obs) obs.observer.unobserve(obs.el);
-      });
+      observer.disconnect();
     };
   }, []);
 
@@ -298,7 +301,7 @@ export default function App() {
     <div id="portfolio-app" className="bg-[#faf9f6] text-[#18222f] dark:bg-neutral-950 dark:text-neutral-100 min-h-screen font-sans selection:bg-neutral-100 selection:text-black overflow-x-hidden relative transition-colors duration-300">
       
       {/* Modern minimalist Header */}
-      <header id="portfolio-header" className="sticky top-0 bg-[#faf9f6]/90 dark:bg-neutral-950/90 backdrop-blur-md border-b border-[#dfdab8]/40 dark:border-neutral-800 z-40 transition-all duration-300">
+      <header id="portfolio-header" className="fixed top-0 left-0 right-0 bg-[#faf9f6]/95 dark:bg-neutral-950/95 backdrop-blur-md border-b border-[#dfdab8]/40 dark:border-neutral-800 z-40 transition-all duration-300">
         <div className="max-w-8xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
           {/* Logo / Brand */}
           <div
