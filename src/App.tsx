@@ -311,19 +311,26 @@ export default function App() {
             </span>
           </div>
 
-          {/* Navigation Links with Active Highlighting */}
-          <nav id="header-nav" className="hidden md:flex items-center gap-8 text-xs font-display font-bold uppercase tracking-wider">
+          {/* Navigation Links with iOS Glass Sliding Pill */}
+          <nav id="header-nav" className="hidden md:flex items-center gap-1 text-xs font-display font-bold uppercase tracking-wider bg-[#faf9f6]/10 dark:bg-neutral-950/10 border border-[#dfdab8]/30 dark:border-neutral-800/30 rounded-full p-1 backdrop-blur-md">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleScrollToSection(item.id)}
-                className={`transition-all duration-200 cursor-pointer relative py-1 border-b-2 ${
+                className={`transition-all duration-300 cursor-pointer relative px-4 py-2 rounded-full text-xs font-display tracking-wider z-10 select-none ${
                   activeSection === item.id
-                    ? "text-[#0f3830] dark:text-emerald-400 font-black border-[#0f3830] dark:border-emerald-400"
-                    : "text-[#18222f]/70 dark:text-neutral-400 hover:text-black dark:hover:text-white border-transparent"
+                    ? "text-[#0f3830] dark:text-emerald-400 font-black"
+                    : "text-[#18222f]/70 dark:text-neutral-400 hover:text-black dark:hover:text-white"
                 }`}
               >
                 {item.label}
+                {activeSection === item.id && (
+                  <motion.div
+                    layoutId="activeNavBackground"
+                    className="absolute inset-0 bg-[#eae7dc]/60 dark:bg-neutral-900/60 border border-[#dfdab8]/60 dark:border-neutral-800/60 rounded-full -z-10 backdrop-blur-xs shadow-xs"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </button>
             ))}
           </nav>
