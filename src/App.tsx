@@ -312,7 +312,7 @@ export default function App() {
           </div>
 
           {/* Navigation Links with iOS Glass Sliding Pill */}
-          <nav id="header-nav" className="hidden md:flex items-center gap-1 text-xs font-display font-bold uppercase tracking-wider bg-[#faf9f6]/10 dark:bg-neutral-950/10 border border-[#dfdab8]/30 dark:border-neutral-800/30 rounded-full p-1 backdrop-blur-md">
+          <nav id="header-nav" className="hidden md:flex items-center gap-1 text-xs font-display font-bold uppercase tracking-wider">
             {navItems.map((item) => (
               <button
                 key={item.id}
