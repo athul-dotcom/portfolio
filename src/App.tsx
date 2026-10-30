@@ -104,9 +104,7 @@ const SKILL_CATEGORIES = [
       { name: "Java" },
       { name: "JavaScript" },
       { name: "SQL" },
-      { name: "C" },
-      { name: "C++" },
-      { name: "Solidity" }
+      { name: "C" }
     ]
   },
   {
@@ -129,7 +127,8 @@ const SKILL_CATEGORIES = [
       { name: "Git & GitHub" },
       { name: "Android Studio" },
       { name: "VS Code" },
-      { name: "Google Colab" }
+      { name: "Google Colab" },
+      { name: "Figma" }
     ]
   }
 ];
