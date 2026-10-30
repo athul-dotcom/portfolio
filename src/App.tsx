@@ -136,17 +136,27 @@ const SKILL_CATEGORIES = [
 
 const CERTIFICATIONS_GROUPED = [
   {
+    issuer: "Deloitte Australia (via Forage)",
+    certs: [
+      {
+        title: "Tableau Dashboard & Excel Data Classification Simulation",
+        date: "Aug 2026",
+        certFile: "/certificates/deloitte-forage.pdf"
+      }
+    ]
+  },
+  {
     issuer: "IBM SkillsBuild",
     certs: [
-      { title: "Artificial Intelligence Fundamentals", date: "Jun 2026" }
+      { title: "Artificial Intelligence Fundamentals", date: "Jun 2026", certFile: "" }
     ]
   },
   {
     issuer: "Infosys Springboard",
     certs: [
-      { title: "IoT Platforms Overview", date: "Apr 2026" },
-      { title: "Basics of Python Development", date: "Feb 2026" },
-      { title: "Computational Problem Solving", date: "Jan 2026" }
+      { title: "IoT Platforms Overview", date: "Apr 2026", certFile: "" },
+      { title: "Basics of Python Development", date: "Feb 2026", certFile: "" },
+      { title: "Computational Problem Solving", date: "Jan 2026", certFile: "" }
     ]
   }
 ];
@@ -669,10 +679,23 @@ export default function App() {
                       {group.certs.map((cert, cIdx) => (
                         <li
                           key={cIdx}
-                          className="flex justify-between items-center text-xs font-bold text-[#18222f] dark:text-neutral-200 pb-3 border-b border-[#dfdab8]/30 dark:border-neutral-800 last:border-0 last:pb-0"
+                          className="flex justify-between items-start gap-3 text-xs font-bold text-[#18222f] dark:text-neutral-200 pb-3 border-b border-[#dfdab8]/30 dark:border-neutral-800 last:border-0 last:pb-0"
                         >
-                          <span className="pr-4">{cert.title}</span>
-                          <span className="text-[#18222f]/50 dark:text-neutral-500 font-mono shrink-0">{cert.date}</span>
+                          <span className="flex-1">{cert.title}</span>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className="text-[#18222f]/50 dark:text-neutral-500 font-mono">{cert.date}</span>
+                            {cert.certFile && (
+                              <a
+                                href={cert.certFile}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#0f3830]/10 dark:bg-emerald-600/10 text-[#0f3830] dark:text-emerald-400 border border-[#0f3830]/20 dark:border-emerald-600/20 hover:bg-[#0f3830]/20 dark:hover:bg-emerald-600/20 transition-colors cursor-pointer"
+                              >
+                                <FileText className="w-2.5 h-2.5" />
+                                View
+                              </a>
+                            )}
+                          </div>
                         </li>
                       ))}
                     </ul>
