@@ -140,22 +140,22 @@ const CERTIFICATIONS_GROUPED = [
       {
         title: "Tableau Dashboard & Excel Data Classification Simulation",
         date: "Aug 2026",
-        certFile: "/certificates/deloitte-forage.pdf"
+        certFile: "/certificates/deloitte-forage.jpg"
       }
     ]
   },
   {
     issuer: "IBM SkillsBuild",
     certs: [
-      { title: "Artificial Intelligence Fundamentals", date: "Jun 2026", certFile: "" }
+      { title: "Artificial Intelligence Fundamentals", date: "Jun 2026", certFile: "/certificates/ibm-ai-fundamentals.jpg" }
     ]
   },
   {
     issuer: "Infosys Springboard",
     certs: [
-      { title: "IoT Platforms Overview", date: "Apr 2026", certFile: "" },
-      { title: "Basics of Python Development", date: "Feb 2026", certFile: "" },
-      { title: "Computational Problem Solving", date: "Jan 2026", certFile: "" }
+      { title: "IoT Platforms Overview", date: "Apr 2026", certFile: "/certificates/infosys-iot.jpg" },
+      { title: "Basics of Python Development", date: "Feb 2026", certFile: "/certificates/infosys-python.jpg" },
+      { title: "Computational Problem Solving", date: "Jan 2026", certFile: "/certificates/infosys-computational.jpg" }
     ]
   }
 ];
