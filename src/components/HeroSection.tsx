@@ -1,16 +1,18 @@
 import React from "react";
 import { motion } from "motion/react";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Eye } from "lucide-react";
 
 interface HeroSectionProps {
   onOpenCommandPalette: () => void;
   onScrollToSection: (sectionId: string) => void;
+  onViewResume: () => void;
   darkMode?: boolean;
 }
 
 export default function HeroSection({
   onOpenCommandPalette,
   onScrollToSection,
+  onViewResume,
   darkMode = false,
 }: HeroSectionProps) {
   const handleDownloadResume = () => {
@@ -80,6 +82,14 @@ export default function HeroSection({
               >
                 <FileText className="w-4 h-4" />
                 <span>Download Resume</span>
+              </button>
+
+              <button
+                onClick={onViewResume}
+                className="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-neutral-900 hover:bg-[#eae7dc]/30 dark:hover:bg-neutral-800 text-[#18222f] dark:text-white border border-[#dfdab8] dark:border-neutral-800 font-sans font-bold text-xs transition-all cursor-pointer active:scale-95 shadow-xs"
+              >
+                <Eye className="w-4 h-4" />
+                <span>View Resume</span>
               </button>
 
               <button

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   FileText,
   Mail,
@@ -26,7 +26,8 @@ import {
   Smartphone,
   Braces,
   GitBranch,
-  Laptop
+  Laptop,
+  Eye
 } from "lucide-react";
 import CommandPalette from "./components/CommandPalette";
 import HeroSection from "./components/HeroSection";
@@ -165,6 +166,9 @@ export default function App() {
   const [activeProjectTab, setActiveProjectTab] = useState<"all" | "web" | "mobile">("all");
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
 
+  // Quick Look Preview Modal
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+
   // Theme, Scroll Highlight, & Mobile Drawer Menu State
   const [darkMode, setDarkMode] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -223,6 +227,15 @@ export default function App() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Close Quick Look modal on Escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPreviewFile(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
@@ -305,6 +318,69 @@ export default function App() {
 
   return (
     <div id="portfolio-app" className="bg-[#faf9f6] text-[#18222f] dark:bg-neutral-950 dark:text-neutral-100 min-h-screen font-sans selection:bg-neutral-100 selection:text-black overflow-x-hidden relative transition-colors duration-300">
+
+      {/* ── Quick Look Lightbox Modal ── */}
+      <AnimatePresence>
+        {previewFile && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
+            onClick={() => setPreviewFile(null)}
+          >
+            {/* Blurred dark backdrop */}
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-xl" />
+
+            {/* Modal card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.88, y: 24 }}
+              transition={{ type: "spring", stiffness: 320, damping: 28 }}
+              className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-white/10 dark:bg-neutral-900/20 backdrop-blur-2xl border border-white/20 dark:border-neutral-700/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Title bar */}
+              <div className="flex items-center justify-between px-5 py-3 bg-white/10 dark:bg-black/20 border-b border-white/10 dark:border-neutral-800/40">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-white/70" />
+                  <span className="text-xs font-bold text-white/80 font-mono tracking-wide">Quick Look</span>
+                </div>
+                <button
+                  onClick={() => setPreviewFile(null)}
+                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5 text-white/80" />
+                </button>
+              </div>
+
+              {/* Content: image or PDF iframe */}
+              <div className="flex-1 overflow-auto flex items-center justify-center p-4 bg-black/10">
+                {previewFile.endsWith(".pdf") ? (
+                  <iframe
+                    src={previewFile}
+                    className="w-full h-[75vh] rounded-xl border-0"
+                    title="Certificate Preview"
+                  />
+                ) : (
+                  <img
+                    src={previewFile}
+                    alt="Certificate Preview"
+                    className="max-w-full max-h-[75vh] object-contain rounded-xl shadow-lg"
+                  />
+                )}
+              </div>
+
+              {/* Footer hint */}
+              <div className="px-5 py-2.5 bg-white/5 dark:bg-black/10 border-t border-white/10 dark:border-neutral-800/40 text-center">
+                <span className="text-[10px] text-white/40 font-mono">Press ESC or click outside to close</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Modern minimalist Header */}
       <header id="portfolio-header" className="fixed top-0 left-0 right-0 bg-[#faf9f6]/95 dark:bg-neutral-950/95 backdrop-blur-md border-b border-[#dfdab8]/40 dark:border-neutral-800 z-[100] shadow-sm transition-all duration-300">
@@ -412,6 +488,7 @@ export default function App() {
       <HeroSection
         onOpenCommandPalette={() => setPaletteOpen(true)}
         onScrollToSection={handleScrollToSection}
+        onViewResume={() => setPreviewFile("/Athul_KR_Resume.pdf")}
         darkMode={darkMode}
       />
 
@@ -684,15 +761,13 @@ export default function App() {
                           <div className="flex items-center gap-2 shrink-0">
                             <span className="text-[#18222f]/50 dark:text-neutral-500 font-mono">{cert.date}</span>
                             {cert.certFile && (
-                              <a
-                                href={cert.certFile}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <button
+                                onClick={() => setPreviewFile(cert.certFile)}
                                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#0f3830]/10 dark:bg-emerald-600/10 text-[#0f3830] dark:text-emerald-400 border border-[#0f3830]/20 dark:border-emerald-600/20 hover:bg-[#0f3830]/20 dark:hover:bg-emerald-600/20 transition-colors cursor-pointer"
                               >
-                                <FileText className="w-2.5 h-2.5" />
+                                <Eye className="w-2.5 h-2.5" />
                                 View
-                              </a>
+                              </button>
                             )}
                           </div>
                         </li>
