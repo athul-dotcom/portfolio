@@ -371,7 +371,7 @@ export default function App() {
               <div className="flex-1 overflow-auto flex items-center justify-center p-4 bg-black/10">
                 {previewFile.endsWith(".pdf") ? (
                   <iframe
-                    src={previewFile}
+                    src={`${previewFile}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                     className="w-full h-[75vh] rounded-xl border-0"
                     title="Certificate Preview"
                   />
@@ -823,11 +823,11 @@ export default function App() {
                       <span>athulkr34@gmail.com</span>
                     </a>
                     <a
-                      href="tel:+919074092795"
+                      href="tel:+919562553921"
                       className="flex items-center gap-2.5 text-xs font-bold text-[#18222f] dark:text-neutral-300 hover:text-[#0f3830] dark:hover:text-emerald-400 w-fit"
                     >
                       <Phone className="w-4 h-4 text-[#0f3830] dark:text-emerald-400" />
-                      <span>+91 90740 92795</span>
+                      <span>+91 95625 53921</span>
                     </a>
                   </div>
 
