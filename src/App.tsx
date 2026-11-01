@@ -348,12 +348,23 @@ export default function App() {
                   <FileText className="w-4 h-4 text-white/70" />
                   <span className="text-xs font-bold text-white/80 font-mono tracking-wide">Quick Look</span>
                 </div>
-                <button
-                  onClick={() => setPreviewFile(null)}
-                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X className="w-3.5 h-3.5 text-white/80" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={previewFile}
+                    download
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FileText className="w-3 h-3" />
+                    Download
+                  </a>
+                  <button
+                    onClick={() => setPreviewFile(null)}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <X className="w-3.5 h-3.5 text-white/80" />
+                  </button>
+                </div>
               </div>
 
               {/* Content: image or PDF iframe */}

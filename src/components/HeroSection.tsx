@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { FileText, Search, Eye } from "lucide-react";
+import { FileText, Search } from "lucide-react";
 
 interface HeroSectionProps {
   onOpenCommandPalette: () => void;
@@ -15,15 +15,6 @@ export default function HeroSection({
   onViewResume,
   darkMode = false,
 }: HeroSectionProps) {
-  const handleDownloadResume = () => {
-    const link = document.createElement("a");
-    link.href = "/Athul_KR_Resume.pdf";
-    link.download = "Athul_KR_Resume.pdf";
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <section
@@ -77,19 +68,11 @@ export default function HeroSection({
               className="flex flex-wrap items-center gap-3 mt-4"
             >
               <button
-                onClick={handleDownloadResume}
-                className="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-neutral-900 hover:bg-[#eae7dc]/30 dark:hover:bg-neutral-800 text-[#18222f] dark:text-white border border-[#dfdab8] dark:border-neutral-800 font-sans font-bold text-xs transition-all cursor-pointer active:scale-95 shadow-xs"
-              >
-                <FileText className="w-4 h-4" />
-                <span>Download Resume</span>
-              </button>
-
-              <button
                 onClick={onViewResume}
                 className="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-neutral-900 hover:bg-[#eae7dc]/30 dark:hover:bg-neutral-800 text-[#18222f] dark:text-white border border-[#dfdab8] dark:border-neutral-800 font-sans font-bold text-xs transition-all cursor-pointer active:scale-95 shadow-xs"
               >
-                <Eye className="w-4 h-4" />
-                <span>View Resume</span>
+                <FileText className="w-4 h-4" />
+                <span>Resume</span>
               </button>
 
               <button
